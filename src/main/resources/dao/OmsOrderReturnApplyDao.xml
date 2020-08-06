@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mymail.dao.OmsOrderReturnApplyDao">
+    <sql id="orderReturnApplySql">
+          `id`,
+          `order_id`,
+          `company_address_id`,
+          `product_id`,
+          `order_sn`,
+          `create_time`,
+          `member_username`,
+          `return_amount`,
+          `return_name`,
+          `return_phone`,
+          `status`,
+          `handle_time`,
+          `product_pic`,
+          `product_name`,
+          `product_brand`,
+          `product_attr`,
+          `product_count`,
+          `product_price`,
+          `product_real_price`,
+          `reason`,
+          `description`,
+          `proof_pics`,
+          `handle_note`,
+          `handle_man`,
+          `receive_man`,
+          `receive_time`,
+          `receive_note`
+    </sql>
+
+    <select id="list" resultType="com.example.mymail.model.OmsOrderReturnApply">
+        select
+            <include refid="orderReturnApplySql" />
+        from oms_order_return_apply
+        where 1 = 1
+        <if test="queryParam.id != null">
+            and order_id = #{queryParam.id}
+        </if>
+        <if test="queryParam.receiverKeyword != null and queryParam.receiverKeyword != ''">
+            and (
+                 return_name = #{queryParam.receiverKeyword}
+                 or return_phone = #{queryParam.receiverKeyword}
+            )
+        </if>
+        <if test="queryParam.status != null">
+            and status = #{queryParam.status}
+        </if>
+
+        <if test="queryParam.createTime != null and queryParam.createTime != ''">
+            and createTime LIKE concat(#{queryParam.createTime},"%")
+        </if>
+        <if test="queryParam.handleMan != null and queryParam.handleMan !=''">
+            and handle_man = #{queryParam.handleMan}
+        </if>
+        <if test="queryParam.handleTime != null and queryParam.handleTime != ''">
+            and handle_time LIKE concat(#{queryParam.handleTime},"%")
+        </if>
+
+    </select>
+
+</mapper>

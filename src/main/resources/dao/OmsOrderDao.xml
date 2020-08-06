@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mymail.dao.OmsOrderDao">
+    <sql id="orderSql">
+          `id`,
+          `member_id`,
+          `coupon_id`,
+          `order_sn`,
+          `create_time`,
+          `member_username`,
+          `total_amount`,
+          `pay_amount`,
+          `freight_amount`,
+          `promotion_amount`,
+          `integration_amount`,
+          `coupon_amount`,
+          `discount_amount`,
+          `pay_type`,
+          `source_type`,
+          `status`,
+          `order_type`,
+          `delivery_company`,
+          `delivery_sn`,
+          `auto_confirm_day`,
+          `integration`,
+          `growth`,
+          `promotion_info`,
+          `bill_type`,
+          `bill_header`,
+          `bill_content`,
+          `bill_receiver_phone`,
+          `bill_receiver_email`,
+          `receiver_name`,
+          `receiver_phone`,
+          `receiver_post_code`,
+          `receiver_province`,
+          `receiver_city`,
+          `receiver_region`,
+          `receiver_detail_address`,
+          `note`,
+          `confirm_status`,
+          `delete_status`,
+          `use_integration`,
+          `payment_time`,
+          `delivery_time`,
+          `receive_time`,
+          `comment_time`,
+          `modify_time`
+    </sql>
+
+    <select id="list" resultType="com.example.mymail.model.OmsOrder">
+        select
+           <include refid="orderSql" />
+        from oms_order
+        WHERE 1 = 1
+        <if test="queryParam.orderSn != null">
+            AND order_sn = #{queryParam.orderSn}
+        </if>
+
+        <if test="queryParam.status != null">
+            AND status = #{queryParam.status}
+        </if>
+
+        <if test="queryParam.orderType != null">
+            AND order_type = #{queryParam.orderType}
+        </if>
+
+        <if test="queryParam.sourceType != null">
+            AND source_type = #{queryParam.sourceType}
+        </if>
+
+        <if test="queryParam.createTime != null and queryParam.createTime != ''">
+            AND create_time LIKE concat(#{queryParam.createTime},"%")
+        </if>
+
+        <if test="queryParam.receiverKeyword != null and queryParam.receiverKeyword != ''">
+            AND (
+                receiver_name LIKE CONCAT('%', #{queryParam.receiverKeyword}, '%')
+                OR receiver_phone LIKE CONCAT('%', #{queryParam.receiverKeyword}, '%')
+            )
+        </if>
+
+    </select>
+</mapper>
